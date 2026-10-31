@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BroSite - Panou Admin</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131d31;
+            --border-color: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        h1, h2 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            background-color: #0b0f19;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            font-weight: bold;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-link {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .grid-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            background-color: #0b0f19;
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            resize: none;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- ZONA DE AUTENTIFICARE -->
+        <div id="loginCard" class="card">
+            <h1>🔒 BroSite Admin</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Introdu parola de administrator pentru a accesa panoul.</p>
+            
+            <div class="form-group">
+                <label for="adminPass">Parolă Admin</label>
+                <input type="password" id="adminPass" placeholder="Introdu parola...">
+            </div>
+            
+            <button class="btn" onclick="checkPassword()">Intră în Admin</button>
+            <div id="errorMsg" class="error-msg">Parolă incorectă! Încearcă din nou.</div>
+        </div>
+
+        <!-- PANOUL DE ADMIN (Ascuns până se bagă parola) -->
+        <div id="adminPanel" class="admin-content">
+            <div class="card">
+                <h2>⚡ Link-uri Rapide Gestionare</h2>
+                <div class="grid-links">
+                    <a href="https://formspree.io/forms/xwllnyrd/submissions" target="_blank" class="btn btn-link">📩 Vezi Mesaje Formspree</a>
+                    <a href="https://www.google.com/adsense/" target="_blank" class="btn btn-link">💰 Google AdSense</a>
+                    <a href="https://studio.youtube.com" target="_blank" class="btn btn-link">📺 YouTube Studio</a>
+                    <a href="https://github.com/brosite/brosite.github.io" target="_blank" class="btn btn-link">⚙️ Repository GitHub</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>👤 Generator Membru Nou</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Generează codul HTML ca să adaugi un membru nou în `index.html`:</p>
+                
+                <div class="form-group">
+                    <label>Nume Membru</label>
+                    <input type="text" id="newMemberName" placeholder="Ex: Popică">
+                </div>
+                
+                <div class="form-group">
+                    <label>Rol</label>
+                    <input type="text" id="newMemberRole" value="Membru">
+                </div>
+
+                <button class="btn" onclick="generateCode()" style="margin-bottom: 15px;">Generează Cod HTML</button>
+
+                <div class="form-group">
+                    <label>Copiază codul de mai jos și pune-l în `index.html`:</label>
+                    <textarea id="resultCode" readonly placeholder="Codul generat va apărea aici..."></textarea>
+                </div>
+            </div>
+
+            <button class="btn" style="background-color: var(--border-color); color: var(--text-main);" onclick="logout()">Ieși din Admin</button>
+        </div>
+    </div>
+
+    <script>
+        // AICI SCHIMBI PAROLA DE ADMIN DACĂ VREI
+        const CORRECT_PASSWORD = "bro2026";
+
+        function checkPassword() {
+            const inputPass = document.getElementById("adminPass").value;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if (inputPass === CORRECT_PASSWORD) {
+                document.getElementById("loginCard").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                errorMsg.style.display = "none";
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        function generateCode() {
+            const name = document.getElementById("newMemberName").value || "Nume";
+            const role = document.getElementById("newMemberRole").value || "Membru";
+
+            const html = `<div class="team-member">\n    <div class="member-name">${name}</div>\n    <div class="member-role">${role}</div>\n</div>`;
+            document.getElementById("resultCode").value = html;
+        }
+
+        function logout() {
+            document.getElementById("adminPass").value = "";
+            document.getElementById("loginCard").style.display = "block";
+            document.getElementById("adminPanel").style.display = "none";
+        }
+    </script>
+</body>
+</html>
