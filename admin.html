@@ -146,7 +146,7 @@
             <div id="errorMsg" class="error-msg">Parolă incorectă! Încearcă din nou.</div>
         </div>
 
-        <!-- PANOUL DE ADMIN (Ascuns până se bagă parola) -->
+        <!-- PANOUL DE ADMIN -->
         <div id="adminPanel" class="admin-content">
             <div class="card">
                 <h2>⚡ Link-uri Rapide Gestionare</h2>
@@ -158,6 +158,25 @@
                 </div>
             </div>
 
+            <!-- GENERATOR CLIP YOUTUBE -->
+            <div class="card">
+                <h2>🎬 Generator Cod Video YouTube</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Generează rapid link-ul de embed pentru video din ID-ul de la YouTube:</p>
+                
+                <div class="form-group">
+                    <label>ID-ul Clipului (sau link-ul complet)</label>
+                    <input type="text" id="ytVideoId" placeholder="Ex: dQw4w9WgXcQ">
+                </div>
+
+                <button class="btn" onclick="generateYtCode()" style="margin-bottom: 15px;">Generează Link Embed</button>
+
+                <div class="form-group">
+                    <label>Link-ul de pus în `src` la iframe:</label>
+                    <textarea id="resultYtCode" readonly placeholder="Link-ul va apărea aici..."></textarea>
+                </div>
+            </div>
+
+            <!-- GENERATOR MEMBRU NOU -->
             <div class="card">
                 <h2>👤 Generator Membru Nou</h2>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 15px;">Generează codul HTML ca să adaugi un membru nou în `index.html`:</p>
@@ -185,8 +204,7 @@
     </div>
 
     <script>
-        // AICI SCHIMBI PAROLA DE ADMIN DACĂ VREI
-        const CORRECT_PASSWORD = "bro2026";
+        const CORRECT_PASSWORD = "Stefan1234!";
 
         function checkPassword() {
             const inputPass = document.getElementById("adminPass").value;
@@ -199,6 +217,16 @@
             } else {
                 errorMsg.style.display = "block";
             }
+        }
+
+        function generateYtCode() {
+            let val = document.getElementById("ytVideoId").value.trim();
+            if (val.includes("v=")) {
+                val = val.split("v=")[1].split("&")[0];
+            } else if (val.includes("youtu.be/")) {
+                val = val.split("youtu.be/")[1].split("?")[0];
+            }
+            document.getElementById("resultYtCode").value = `https://www.youtube.com/embed/${val}`;
         }
 
         function generateCode() {

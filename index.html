@@ -92,11 +92,31 @@
             font-size: 0.8rem;
         }
 
-        /* Secțiunea YouTube */
+        /* Secțiunea YouTube & Video Embed */
         .yt-box {
             background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, var(--card-bg) 100%);
             border: 1px solid rgba(255, 0, 0, 0.3);
             text-align: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
         .yt-btn {
@@ -225,11 +245,17 @@
             <span>[ Spațiu Reclamă Google AdSense ]</span>
         </div>
 
-        <!-- Secțiunea YouTube -->
+        <!-- Secțiunea YouTube & Cel mai nou clip -->
         <div class="card yt-box">
-            <h2>📺 Canalul Nostru de YouTube</h2>
-            <p>Urmărește cele mai noi clipuri, distracție și proiecte pe canalul oficial @EchipaBro!</p>
-            <a href="https://www.youtube.com/@EchipaBro" target="_blank" class="yt-btn">🔴 Abonează-te pe @EchipaBro</a>
+            <h2>📺 Cel mai nou clip de pe @EchipaBro</h2>
+            <p>Urmărește distracția și proiectele noastre direct de aici!</p>
+            
+            <!-- Aici poți schimba link-ul iframe cu cel de la ultimul tău clip de pe YouTube (apasă Share -> Embed) -->
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/AICI_PUI_CODUL_VIDEO_DE_PE_YOUTUBE" title="EchipaBro YouTube Video" allowfullscreen></iframe>
+            </div>
+
+            <a href="https://www.youtube.com/@EchipaBro" target="_blank" class="yt-btn">🔴 Abonează-te pe Canal</a>
         </div>
 
         <!-- Despre Noi & Membri -->
@@ -303,7 +329,7 @@
 
         <!-- Donații pe viitor -->
         <div class="donate-box-coming">
-            <h3>☕ Susținere echipa</h3>
+            <h3>☕ Susținere echipă</h3>
             <p>Opțiunea de susținere și donații va fi pusă mai târziu.</p>
         </div>
     </div>
